@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
  const LogIn = () => {
     const direct = useNavigate();
     const [isSignup, setisSignup] = useState(false);
-    console.log(isSignup)
+    console.log(isSignup) 
 
     const [input, setinput] = useState({
         name: '', email: '', password:''
@@ -21,7 +21,7 @@ import { useNavigate } from 'react-router-dom';
         }))
     }
 
-    const handleSubmit =(e)=>{
+    const signupSubmit =(e)=>{
         e.preventDefault();
         console.log(input)
         fetch("http://localhost:3000/auth/regime",{
@@ -43,6 +43,27 @@ import { useNavigate } from 'react-router-dom';
             })
     }
 
+     const loginSubmit =(e)=>{
+         e.preventDefault();
+         console.log(input)
+         fetch("http://localhost:3000/auth/login",{
+             method: "POST",
+             crossDomain:true,
+             headers:{
+                 "Content-Type" : "application/json",
+                 Accept :"application/json",
+                 "Access-Control-Allow-Origin" : "*",
+             },
+             body:JSON.stringify({
+                 email : input.email,
+                 password : input.password
+             })
+         }).then((res)=>res.json())
+             .then((data)=>{
+                 console.log(data,"login Successful")
+             })
+     }
+
     const resetState = ()=>{
         setisSignup(!isSignup);
         setinput({name: '', email:'',password:''})
@@ -51,7 +72,7 @@ import { useNavigate } from 'react-router-dom';
     }
   return (
     <div>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={isSignup ? loginSubmit : signupSubmit}>
             <Box
             display={"flex"}
              flexDirection={"column"}
@@ -87,9 +108,19 @@ import { useNavigate } from 'react-router-dom';
                  type={'password'}
                  variant='outlined'
                  placeholder='Password'/>
-                <Button endIcon={isSignup ? <HowToRegOutlinedIcon/> : <LoginOutlinedIcon/>} type='submit' variant='contained' color='warning' sx={{marginTop: 3,borderRadius:3}}>
-                {isSignup ? "signup" : "login"}
-                </Button>
+                {isSignup ? <Button endIcon={isSignup ? <HowToRegOutlinedIcon/> : <LoginOutlinedIcon/>} type='submit'
+                         variant='contained' color='warning' sx={{marginTop: 3, borderRadius: 3}} onClick={signupSubmit}>
+                    {"signup"}
+                </Button> :
+                    <Button endIcon={isSignup ? <HowToRegOutlinedIcon/> : <LoginOutlinedIcon/>}
+                            type='submit'
+                            variant='contained'
+                            color='warning'
+                            sx={{marginTop: 3,borderRadius:3}}
+                            onClick={loginSubmit}
+                    >
+                {"login"}
+                    </Button>}
                 <Button  sx={{marginTop: 3,borderRadius:3}} onClick={resetState}>
                     Change to {isSignup ? "login" : "signup"}
                 </Button>
