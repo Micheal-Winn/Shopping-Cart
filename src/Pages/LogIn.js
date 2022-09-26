@@ -26,7 +26,7 @@ import { useNavigate } from 'react-router-dom';
                   try {
                       e.preventDefault();
                       console.log(input)
-                      const response = await fetch("http://localhost:3000/auth/regime",{
+                      const response = await fetch("http://localhost:3001/auth/regime",{
                           method: "POST",
                           crossDomain:true,
                           headers:{
@@ -60,7 +60,7 @@ import { useNavigate } from 'react-router-dom';
                      e.preventDefault();
                      console.log(input)
                      try {
-                        const response = await fetch("http://localhost:3000/auth/login",{
+                        const response = await fetch("http://localhost:3001/auth/login",{
                              method: "POST",
                              crossDomain:true,
                              headers:{
